@@ -325,6 +325,23 @@ export class BitClout {
     return result?.data;
   }
 
+  /**
+   * Get all authorized derived keys.
+   */
+  async getUserDerivedKeys({ publicKeyBase58Check }: { publicKeyBase58Check: string; }) {
+    if (!publicKeyBase58Check) {
+      throw new Error("publicKeyBase58Check is required");
+    }
+
+    const path = "/v0/get-user-derived-keys";
+    const data = {
+      PublicKeyBase58Check: publicKeyBase58Check,
+    };
+
+    const result = await this.getClient().post(path, data);
+    return result?.data;
+  }
+
   private getClient() {
     if (client) return client;
     client = axios.create({
