@@ -345,12 +345,7 @@ export class BitClout {
   private getClient() {
     if (client) return client;
     client = axios.create({
-      baseURL: this.baseUrl,
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "Accept-Encoding": "gzip",
-      },
+      baseURL: this.baseUrl
     });
     return client;
   }
