@@ -238,6 +238,93 @@ export class BitClout {
     return result?.data;
   }
 
+  /**
+   * Authorize or delete a derived key.
+   */
+  async authorizeDerivedKey({
+    ownerPublicKeyBase58Check,
+    derivedPublicKeyBase58Check,
+    expirationBlock,
+    accessSignature,
+    deleteKey,
+    derivedKeySignature,
+    minFeeRateNanosPerKB,
+  }: {
+    ownerPublicKeyBase58Check: string;
+    derivedPublicKeyBase58Check: string;
+    expirationBlock: number;
+    accessSignature: string;
+    deleteKey: boolean;
+    derivedKeySignature: string;
+    minFeeRateNanosPerKB: number;
+  }) {
+    if (!ownerPublicKeyBase58Check) {
+      throw new Error("ownerPublicKeyBase58Check is required");
+    }
+
+    if (!derivedPublicKeyBase58Check) {
+      throw new Error("derivedPublicKeyBase58Check is required");
+    }
+
+    if (!expirationBlock) {
+      throw new Error("expirationBlock is required");
+    }
+
+    if (!accessSignature) {
+      throw new Error("accessSignature is required");
+    }
+
+    if (deleteKey === undefined) {
+      throw new Error("deleteKey is required");
+    }
+
+    if (!minFeeRateNanosPerKB) {
+      throw new Error("minFeeRateNanosPerKB is required");
+    }
+
+    const path = "/v0/authorize-derived-key";
+    const data = {
+      OwnerPublicKeyBase58Check: ownerPublicKeyBase58Check,
+      DerivedPublicKeyBase58Check: derivedPublicKeyBase58Check,
+      ExpirationBlock: expirationBlock,
+      AccessSignature: accessSignature,
+      DeleteKey: deleteKey,
+      DerivedKeySignature: derivedKeySignature,
+      MinFeeRateNanosPerKB: minFeeRateNanosPerKB,
+    };
+
+    const result = await this.getClient().post(path, data);
+    return result?.data;
+  }
+
+  /**
+   * Append extra data to a transaction.
+   */
+  async appendExtraData({
+      transactionHex,
+      extraData,
+  }: {
+    transactionHex: string;
+    extraData: any;
+  }) {
+    if (!transactionHex) {
+      throw new Error("transactionHex is required");
+    }
+
+    if (!extraData) {
+      throw new Error("extraData is required");
+    }
+
+    const path = "/v0/append-extra-data";
+    const data = {
+      TransactionHex: transactionHex,
+      ExtraData: extraData,
+    };
+
+    const result = await this.getClient().post(path, data);
+    return result?.data;
+  }
+
   private getClient() {
     if (client) return client;
     client = axios.create({
