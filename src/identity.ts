@@ -39,6 +39,10 @@ export class IdentityService {
     return this.launch(`/log-in?accessLevelRequest=${accessLevel}`);
   }
 
+  derive(): Promise<any> {
+    return this.launch("/derive");
+  }
+
   launch(
     path?: string
     // params?: { publicKey?: string; tx?: string }
@@ -113,7 +117,7 @@ export class IdentityService {
     this.respond(event.source as Window, event.data.id, {});
   }
 
-  private handleLogin(payload: any) {
+  private handlePayload(payload: any) {
     this.identityWindow.close();
     this.identityWindow = null;
 
@@ -153,8 +157,8 @@ export class IdentityService {
       this.handleInitialize(event);
       // } else if (method === "storageGranted") {
       // this.handleStorageGranted();
-    } else if (method === "login") {
-      this.handleLogin(payload);
+    } else if (method === "login" || method === "derive") {
+      this.handlePayload(payload);
     } else if (method === "info") {
       this.handleInfo(id);
     } else {
